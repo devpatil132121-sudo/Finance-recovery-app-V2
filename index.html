@@ -12,107 +12,111 @@
 *{box-sizing:border-box}
 
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f2f5f9;
-  color:#222;
+margin:0;
+font-family:Arial,sans-serif;
+background:#f2f5f9;
+color:#222
 }
 
 header{
-  background:#123b68;
-  color:white;
-  padding:18px;
-  text-align:center;
+background:#123b68;
+color:white;
+padding:18px;
+text-align:center
 }
 
 header h2{
-  margin:0 0 5px;
+margin:0 0 5px
 }
 
 .container{
-  padding:15px;
-  max-width:700px;
-  margin:auto;
+padding:15px;
+max-width:700px;
+margin:auto
 }
 
 .card{
-  background:white;
-  padding:16px;
-  margin:12px 0;
-  border-radius:14px;
-  box-shadow:0 3px 10px #0001;
+background:white;
+padding:16px;
+margin:12px 0;
+border-radius:14px;
+box-shadow:0 3px 10px #0001
 }
 
 button{
-  border:0;
-  border-radius:10px;
-  padding:13px 16px;
-  margin:5px 2px;
-  font-size:15px;
-  cursor:pointer;
-  background:#123b68;
-  color:white;
+border:0;
+border-radius:10px;
+padding:13px 16px;
+margin:5px 2px;
+font-size:15px;
+cursor:pointer;
+background:#123b68;
+color:white
 }
 
-button.green{background:#198754}
-button.orange{background:#f08c00}
-button.red{background:#dc3545}
+button.green{
+background:#198754
+}
+
+button.orange{
+background:#f08c00
+}
+
+button.red{
+background:#dc3545
+}
 
 input,select,textarea{
-  width:100%;
-  padding:13px;
-  margin:7px 0;
-  border:1px solid #ccc;
-  border-radius:9px;
-  font-size:15px;
+width:100%;
+padding:13px;
+margin:7px 0;
+border:1px solid #ccc;
+border-radius:9px;
+font-size:15px
 }
 
 textarea{
-  min-height:90px;
-  resize:vertical;
+min-height:90px;
+resize:vertical
 }
 
 .option{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px
 }
 
 .result{
-  padding:12px;
-  background:#eef5ff;
-  border-radius:10px;
-  margin-top:10px;
-  line-height:1.6;
+padding:12px;
+background:#eef5ff;
+border-radius:10px;
+margin-top:10px;
+line-height:1.6
 }
 
 .scanbox{
-  background:#fff8e6;
-  padding:14px;
-  border-radius:10px;
-  margin-top:10px;
+background:#fff8e6;
+padding:14px;
+border-radius:10px;
+margin-top:10px
 }
 
 .small{
-  font-size:13px;
-  color:#666;
+font-size:13px;
+color:#666
 }
 
 .customer-edit{
-  border:1px solid #ddd;
-  padding:12px;
-  border-radius:10px;
-  margin-top:10px;
-  background:#fafafa;
+border:1px solid #ddd;
+padding:12px;
+border-radius:10px;
+margin-top:10px;
+background:#fafafa
 }
 
 .loading{
-  text-align:center;
-  padding:20px;
-}
-
-.hidden{
-  display:none;
+text-align:center;
+padding:20px
 }
 </style>
 </head>
@@ -120,8 +124,8 @@ textarea{
 <body>
 
 <header>
-  <h2>DEV FINANCE COLLECTION</h2>
-  <div>Customer & Vehicle Management</div>
+<h2>DEV FINANCE COLLECTION</h2>
+<div>Customer & Vehicle Management</div>
 </header>
 
 <div class="container">
@@ -133,9 +137,9 @@ textarea{
 <h3>🔎 Smart Customer / Vehicle Search</h3>
 
 <input
-  id="searchBox"
-  placeholder="Customer name / Vehicle / Mobile"
-  oninput="searchCustomer()"
+id="searchBox"
+placeholder="Customer name / Vehicle / Mobile"
+oninput="searchCustomer()"
 >
 
 <div id="searchResult"></div>
@@ -291,9 +295,7 @@ Save Payment
 
 <script>
 
-/* ================================
-   DATABASE
-================================ */
+/* DATABASE */
 
 let customers =
 JSON.parse(
@@ -301,9 +303,7 @@ localStorage.getItem("devCustomers")
 ) || [];
 
 
-/* ================================
-   SAVE DATABASE
-================================ */
+/* SAVE */
 
 function saveData(){
 
@@ -315,9 +315,7 @@ JSON.stringify(customers)
 }
 
 
-/* ================================
-   SAFE TEXT
-================================ */
+/* SAFE TEXT */
 
 function safe(text){
 
@@ -331,9 +329,7 @@ return String(text || "")
 }
 
 
-/* ================================
-   VEHICLE NORMALIZE
-================================ */
+/* VEHICLE NORMALIZE */
 
 function normalizeVehicle(text){
 
@@ -344,9 +340,7 @@ return (text || "")
 }
 
 
-/* ================================
-   VEHICLE SIMILARITY
-================================ */
+/* VEHICLE SIMILARITY */
 
 function vehicleSimilarity(a,b){
 
@@ -373,9 +367,7 @@ return Math.round((same/maxLen)*100);
 }
 
 
-/* ================================
-   SEARCH
-================================ */
+/* SEARCH */
 
 function searchCustomer(){
 
@@ -399,7 +391,7 @@ let vehicle=normalizeVehicle(q);
 
 let exact=customers.filter(c=>{
 
-return (
+return(
 
 (c.name || "")
 .toLowerCase()
@@ -476,9 +468,7 @@ return;
 }
 
 
-/* ================================
-   SMART VEHICLE MATCH
-================================ */
+/* SMART MATCH */
 
 let smart=customers
 .map(c=>({
@@ -575,9 +565,7 @@ onclick="useVehicle('${encodeURIComponent(q)}')"
 }
 
 
-/* ================================
-   SELECT CUSTOMER
-================================ */
+/* SELECT CUSTOMER */
 
 function selectCustomer(vehicle){
 
@@ -587,7 +575,7 @@ let c=customers.find(
 x=>x.vehicle===vehicle
 );
 
-if(!c) return;
+if(!c)return;
 
 document.getElementById(
 "searchBox"
@@ -646,9 +634,7 @@ onclick="paymentFor('${encodeURIComponent(c.name || "")}')"
 }
 
 
-/* ================================
-   CAMERA
-================================ */
+/* CAMERA */
 
 function startCamera(){
 
@@ -673,9 +659,7 @@ input.click();
 }
 
 
-/* ================================
-   GALLERY
-================================ */
+/* GALLERY */
 
 function scanFromGallery(){
 
@@ -699,9 +683,7 @@ input.click();
 }
 
 
-/* ================================
-   DOCUMENT
-================================ */
+/* DOCUMENT */
 
 function scanDocument(){
 
@@ -726,9 +708,7 @@ input.click();
 }
 
 
-/* ================================
-   IMAGE ENHANCEMENT
-================================ */
+/* IMAGE ENHANCE */
 
 function enhanceImage(file){
 
@@ -777,7 +757,7 @@ let gray=
 
 gray=gray*1.15;
 
-if(gray>255) gray=255;
+if(gray>255)gray=255;
 
 data[i]=gray;
 data[i+1]=gray;
@@ -792,9 +772,7 @@ imageData,
 );
 
 canvas.toBlob(
-blob=>{
-resolve(blob);
-},
+blob=>resolve(blob),
 "image/jpeg",
 0.95
 );
@@ -812,9 +790,7 @@ img.src=url;
 }
 
 
-/* ================================
-   OCR
-================================ */
+/* OCR */
 
 async function runOCR(file){
 
@@ -832,13 +808,14 @@ status.innerHTML=`
 
 <br><br>
 
-नंतर OCR scan सुरू होईल.
+OCR सुरू होईल.
 
 </div>
 
 `;
 
 results.innerHTML="";
+
 
 try{
 
@@ -852,7 +829,7 @@ status.innerHTML=`
 
 <br><br>
 
-Text वाचत आहे. कृपया थांबा.
+Text वाचत आहे.
 
 </div>
 
@@ -942,7 +919,7 @@ status.innerHTML=`
 
 <br><br>
 
-कृपया clear आणि जवळचा फोटो वापरा.
+Clear photo वापरून पुन्हा try करा.
 
 </div>
 
@@ -953,9 +930,7 @@ status.innerHTML=`
 }
 
 
-/* ================================
-   PARSE CUSTOMER DATA
-================================ */
+/* PARSE OCR */
 
 function parseCustomerData(text){
 
@@ -1002,8 +977,6 @@ amounts=amounts
 .filter(x=>x);
 
 
-/* RECORDS */
-
 let records=[];
 
 
@@ -1015,8 +988,6 @@ let name="";
 let mobile=mobiles[index] || "";
 let amount=amounts[index] || "";
 
-
-/* Look for name near vehicle */
 
 let vi=lines.findIndex(
 line=>
@@ -1041,17 +1012,17 @@ name=cleanName(previous);
 }
 
 
-/* Fallback */
-
 if(!name){
 
 let possible=lines.filter(line=>{
 
 return(
+
 line.length>=3 &&
 line.length<=60 &&
 !/\d{6,}/.test(line) &&
 !/vehicle|mobile|phone|amount|pending|customer|name/i.test(line)
+
 );
 
 });
@@ -1079,8 +1050,6 @@ status:"Pending"
 }
 
 
-/* No vehicle */
-
 if(!records.length){
 
 records.push({
@@ -1103,9 +1072,7 @@ return records;
 }
 
 
-/* ================================
-   CLEAN NAME
-================================ */
+/* CLEAN NAME */
 
 function cleanName(text){
 
@@ -1119,9 +1086,7 @@ return text
 }
 
 
-/* ================================
-   OCR RECORDS
-================================ */
+/* OCR RECORDS */
 
 function renderOCRRecords(records){
 
@@ -1137,7 +1102,7 @@ box.innerHTML+=`
 <div class="small">
 
 ⚠️ Save करण्यापूर्वी प्रत्येक field तपासा.
-चुकीचे OCR असल्यास manually correction करा.
+चुकीची माहिती असल्यास correction करा.
 
 </div>
 
@@ -1233,9 +1198,7 @@ onclick="saveOCRCustomer(${index})"
 }
 
 
-/* ================================
-   SAVE OCR CUSTOMER
-================================ */
+/* SAVE OCR CUSTOMER */
 
 function saveOCRCustomer(index){
 
@@ -1289,12 +1252,9 @@ return;
 }
 
 
-/* DUPLICATE */
-
 let duplicate=customers.find(c=>
 customer.vehicle &&
-normalizeVehicle(c.vehicle)
-===customer.vehicle
+normalizeVehicle(c.vehicle)===customer.vehicle
 );
 
 
@@ -1327,8 +1287,6 @@ return;
 }
 
 
-/* SAVE */
-
 customers.push(customer);
 
 saveData();
@@ -1342,9 +1300,7 @@ alert(
 }
 
 
-/* ================================
-   ADD CUSTOMER
-================================ */
+/* ADD CUSTOMER */
 
 function addCustomer(){
 
@@ -1449,9 +1405,7 @@ displayCustomers();
 }
 
 
-/* ================================
-   CUSTOMER LIST
-================================ */
+/* CUSTOMER LIST */
 
 function displayCustomers(){
 
@@ -1529,9 +1483,7 @@ Delete
 }
 
 
-/* ================================
-   EDIT CUSTOMER
-================================ */
+/* EDIT */
 
 function editCustomer(index){
 
@@ -1575,16 +1527,10 @@ document.getElementById(
 behavior:"smooth"
 });
 
-alert(
-"Details edit करून Save Customer करा."
-);
-
 }
 
 
-/* ================================
-   PAYMENT
-================================ */
+/* PAYMENT */
 
 function paymentFor(name){
 
@@ -1603,9 +1549,7 @@ behavior:"smooth"
 }
 
 
-/* ================================
-   SAVE PAYMENT
-================================ */
+/* SAVE PAYMENT */
 
 function savePayment(){
 
@@ -1707,9 +1651,7 @@ document.getElementById(
 }
 
 
-/* ================================
-   DELETE
-================================ */
+/* DELETE */
 
 function deleteCustomer(index){
 
@@ -1728,9 +1670,7 @@ displayCustomers();
 }
 
 
-/* ================================
-   USE VEHICLE
-================================ */
+/* USE VEHICLE */
 
 function useVehicle(vehicle){
 
@@ -1749,9 +1689,7 @@ behavior:"smooth"
 }
 
 
-/* ================================
-   PARSE AGAIN
-================================ */
+/* PARSE AGAIN */
 
 function parseAgain(){
 
@@ -1780,9 +1718,7 @@ renderOCRRecords(records);
 }
 
 
-/* ================================
-   START
-================================ */
+/* START */
 
 displayCustomers();
 
