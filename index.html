@@ -6,129 +6,131 @@
 
 <title>Dev Finance Collection</title>
 
-<!-- OCR LIBRARY -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f2f5f9;
-  color:#222;
+margin:0;
+font-family:Arial,sans-serif;
+background:#f2f5f9;
+color:#222
 }
 
 header{
-  background:#123b68;
-  color:white;
-  padding:18px;
-  text-align:center;
+background:#123b68;
+color:white;
+padding:18px;
+text-align:center
 }
 
-header h2{
-  margin:0 0 5px;
-}
+header h2{margin:0 0 5px}
 
 .container{
-  padding:15px;
-  max-width:650px;
-  margin:auto;
+padding:15px;
+max-width:700px;
+margin:auto
 }
 
 .card{
-  background:white;
-  padding:16px;
-  margin:12px 0;
-  border-radius:14px;
-  box-shadow:0 3px 10px #0001;
+background:white;
+padding:16px;
+margin:12px 0;
+border-radius:14px;
+box-shadow:0 3px 10px #0001
 }
 
 button{
-  border:0;
-  border-radius:10px;
-  padding:13px 16px;
-  margin:5px 2px;
-  font-size:15px;
-  cursor:pointer;
-  background:#123b68;
-  color:white;
+border:0;
+border-radius:10px;
+padding:13px 16px;
+margin:5px 2px;
+font-size:15px;
+cursor:pointer;
+background:#123b68;
+color:white
 }
 
-button.green{
-  background:#198754;
+button.green{background:#198754}
+button.orange{background:#f08c00}
+button.red{background:#dc3545}
+
+input,select,textarea{
+width:100%;
+padding:13px;
+margin:7px 0;
+border:1px solid #ccc;
+border-radius:9px;
+font-size:15px
 }
 
-button.orange{
-  background:#f08c00;
-}
-
-button.red{
-  background:#dc3545;
-}
-
-input,select{
-  width:100%;
-  padding:13px;
-  margin:7px 0;
-  border:1px solid #ccc;
-  border-radius:9px;
-  font-size:15px;
+textarea{
+min-height:100px;
+resize:vertical
 }
 
 .option{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px
 }
 
 .result{
-  padding:12px;
-  background:#eef5ff;
-  border-radius:10px;
-  margin-top:10px;
-  line-height:1.6;
+padding:12px;
+background:#eef5ff;
+border-radius:10px;
+margin-top:10px;
+line-height:1.6
+}
+
+.scanbox{
+background:#fff8e6;
+padding:14px;
+border-radius:10px;
+margin-top:10px
 }
 
 .small{
-  font-size:13px;
-  color:#666;
+font-size:13px;
+color:#666
 }
 
 hr{
-  border:0;
-  border-top:1px solid #ddd;
-  margin:15px 0;
+border:0;
+border-top:1px solid #ddd;
+margin:15px 0
 }
 
+.customer-edit{
+border:1px solid #ddd;
+padding:12px;
+border-radius:10px;
+margin-top:10px;
+background:#fafafa
+}
+
+.hidden{
+display:none
+}
+
+.loading{
+text-align:center;
+padding:20px
+}
 </style>
 </head>
 
-
 <body>
 
-
 <header>
-
 <h2>DEV FINANCE COLLECTION</h2>
-
-<div>
-Customer & Vehicle Management
-</div>
-
+<div>Customer & Vehicle Management</div>
 </header>
-
-
 
 <div class="container">
 
-
-<!-- =========================
-     SEARCH
-========================= -->
+<!-- SEARCH -->
 
 <div class="card">
 
@@ -136,51 +138,68 @@ Customer & Vehicle Management
 
 <input
 id="searchBox"
-placeholder="Customer name किंवा Vehicle number"
+placeholder="Customer name / Vehicle number / Mobile"
 oninput="searchCustomer()"
 >
-
-
-<div class="option">
-
-<button onclick="startCamera()">
-📷 Camera Scan
-</button>
-
-
-<button onclick="scanFromGallery()">
-🖼️ Gallery Scan
-</button>
-
-</div>
-
 
 <div id="searchResult"></div>
 
 </div>
 
 
+<!-- SCAN -->
 
-<!-- =========================
-     ADD CUSTOMER
-========================= -->
+<div class="card">
+
+<h3>📷 Customer List / Document Scanner</h3>
+
+<div class="option">
+
+<button onclick="startCamera()">
+📷 Camera
+</button>
+
+<button onclick="scanFromGallery()">
+🖼️ Gallery
+</button>
+
+</div>
+
+<button
+class="orange"
+onclick="scanDocument()"
+style="width:100%"
+>
+📄 Upload Customer List / Document
+</button>
+
+<div class="small">
+Photo किंवा document मधील customer details OCR ने वाचून
+save करण्यासाठी.
+</div>
+
+<div id="ocrStatus"></div>
+
+<div id="ocrResults"></div>
+
+</div>
+
+
+<!-- ADD CUSTOMER -->
 
 <div class="card">
 
 <h3>➕ Add Customer / Vehicle</h3>
-
 
 <input
 id="customerName"
 placeholder="Customer Name"
 >
 
-
 <input
 id="vehicleNumber"
 placeholder="Vehicle Number"
 >
-
 
 <input
 id="mobile"
@@ -188,62 +207,57 @@ placeholder="Mobile Number"
 type="tel"
 >
 
-
 <input
 id="pending"
 placeholder="Pending Amount"
 type="number"
 >
 
+<input
+id="dueDate"
+placeholder="Due Date"
+type="date"
+>
+
+<input
+id="agreement"
+placeholder="Agreement / Loan Number"
+>
+
+<textarea
+id="address"
+placeholder="Address"
+></textarea>
 
 <select id="status">
 
-<option value="Pending">
-Pending
-</option>
-
-<option value="Promise">
-Payment Promise
-</option>
-
-<option value="Paid">
-Paid
-</option>
-
-<option value="Vehicle">
-Vehicle Handover
-</option>
+<option value="Pending">Pending</option>
+<option value="Promise">Payment Promise</option>
+<option value="Paid">Paid</option>
+<option value="Vehicle">Vehicle Handover</option>
 
 </select>
-
 
 <button
 class="green"
 onclick="addCustomer()"
 >
-
 Save Customer
-
 </button>
 
 </div>
 
 
-
-<!-- =========================
-     PAYMENT
-========================= -->
+<!-- PAYMENT -->
 
 <div class="card">
 
 <h3>💰 Collection Entry</h3>
 
-
 <input
 id="paymentCustomer"
 placeholder="Customer Name"
 >
-
 
 <input
 id="paymentAmount"
@@ -251,32 +265,24 @@ placeholder="Payment Amount"
 type="number"
 >
 
-
 <input
 id="paymentDate"
 type="date"
 >
 
-
 <button
 class="green"
 onclick="savePayment()"
 >
-
 Save Payment
-
 </button>
-
 
 <div id="paymentMessage"></div>
 
 </div>
 
 
-
-<!-- =========================
-     CUSTOMER LIST
-========================= -->
+<!-- CUSTOMER LIST -->
 
 <div class="card">
 
@@ -286,22 +292,17 @@ Save Payment
 
 </div>
 
-
 </div>
 
 
-
 <script>
-
 
 /* =====================================================
    DATA
 ===================================================== */
 
 let customers =
-JSON.parse(
-localStorage.getItem("devCustomers")
-) || [];
+JSON.parse(localStorage.getItem("devCustomers")) || [];
 
 
 /* =====================================================
@@ -318,9 +319,24 @@ JSON.stringify(customers)
 }
 
 
+/* =====================================================
+   SAFE HTML
+===================================================== */
+
+function safe(text){
+
+return String(text || "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
 
 /* =====================================================
-   NORMALIZE VEHICLE NUMBER
+   NORMALIZE VEHICLE
 ===================================================== */
 
 function normalizeVehicle(text){
@@ -332,48 +348,31 @@ return (text || "")
 }
 
 
-
 /* =====================================================
    VEHICLE SIMILARITY
 ===================================================== */
 
 function vehicleSimilarity(a,b){
 
-a = normalizeVehicle(a);
-b = normalizeVehicle(b);
+a=normalizeVehicle(a);
+b=normalizeVehicle(b);
 
-if(!a || !b){
-return 0;
-}
+if(!a || !b)return 0;
 
-let maxLen =
-Math.max(a.length,b.length);
+let maxLen=Math.max(a.length,b.length);
+let minLen=Math.min(a.length,b.length);
 
-let same = 0;
+let same=0;
 
-let minLen =
-Math.min(a.length,b.length);
+for(let i=0;i<minLen;i++){
 
-
-for(
-let i=0;
-i<minLen;
-i++
-){
-
-if(a[i] === b[i]){
-same++;
-}
+if(a[i]===b[i])same++;
 
 }
 
-
-return Math.round(
-(same/maxLen)*100
-);
+return Math.round((same/maxLen)*100);
 
 }
-
 
 
 /* =====================================================
@@ -382,17 +381,13 @@ return Math.round(
 
 function searchCustomer(){
 
-let q =
-document.getElementById(
-"searchBox"
-).value.trim();
+let q=document
+.getElementById("searchBox")
+.value
+.trim();
 
-
-let box =
-document.getElementById(
-"searchResult"
-);
-
+let box=document
+.getElementById("searchResult");
 
 if(!q){
 
@@ -401,61 +396,55 @@ return;
 
 }
 
+let lower=q.toLowerCase();
+let vehicle=normalizeVehicle(q);
 
-let query =
-normalizeVehicle(q);
+let exact=customers.filter(c=>{
 
-
-/* EXACT CUSTOMER / VEHICLE MATCH */
-
-let exact =
-customers.filter(c =>
-
-(c.name || "")
-.toLowerCase()
-.includes(
-q.toLowerCase()
-)
-
-||
-
-normalizeVehicle(
-c.vehicle
-).includes(
-query
-)
-
+return(
+(c.name || "").toLowerCase().includes(lower) ||
+normalizeVehicle(c.vehicle).includes(vehicle) ||
+(c.mobile || "").includes(q) ||
+(c.agreement || "").toLowerCase().includes(lower)
 );
+
+});
 
 
 if(exact.length){
 
-box.innerHTML =
-exact.map(c => `
+box.innerHTML=exact.map(c=>`
 
 <div class="result">
 
-<b>👤 ${c.name || "-"}</b>
+<b>👤 ${safe(c.name || "-")}</b>
 
-<br>
+<br>🚗 Vehicle:
+${safe(c.vehicle || "-")}
 
-🚗 Vehicle:
-${c.vehicle || "-"}
+<br>📱 Mobile:
+${safe(c.mobile || "-")}
 
-<br>
+<br>💰 Pending:
+₹${safe(c.pending || "0")}
 
-📱 Mobile:
-${c.mobile || "-"}
+<br>📅 Due:
+${safe(c.dueDate || "-")}
 
-<br>
+<br>📄 Agreement:
+${safe(c.agreement || "-")}
 
-💰 Pending:
-₹${c.pending || "0"}
+<br>📌 Status:
+${safe(c.status || "-")}
 
-<br>
+<br><br>
 
-📌 Status:
-${c.status || "-"}
+<button
+class="green"
+onclick="paymentFor('${encodeURIComponent(c.name || "")}')"
+>
+💰 Payment
+</button>
 
 </div>
 
@@ -466,98 +455,55 @@ return;
 }
 
 
+/* SMART VEHICLE MATCH */
 
-/* =====================================================
-   SMART VEHICLE MATCH
-===================================================== */
-
-let smart =
-customers
-
-.map(c => ({
+let smart=customers
+.map(c=>({
 
 customer:c,
 
-score:
-vehicleSimilarity(
-query,
+score:vehicleSimilarity(
+vehicle,
 c.vehicle
 )
 
 }))
-
-.filter(
-x => x.score >= 60
-)
-
-.sort(
-(a,b) =>
-b.score-a.score
-)
-
+.filter(x=>x.score>=60)
+.sort((a,b)=>b.score-a.score)
 .slice(0,5);
-
 
 
 if(smart.length){
 
-box.innerHTML = `
+box.innerHTML=`
 
 <div class="result">
-
 🔎 <b>Smart Match</b>
-
 <br>
-
 Exact match सापडला नाही.
-
-<br>
-
-जवळचे vehicle matches:
-
 </div>
-
 `;
 
+smart.forEach(x=>{
 
-smart.forEach(x => {
-
-box.innerHTML += `
+box.innerHTML+=`
 
 <div class="result">
 
-<b>
-🚗 ${x.customer.vehicle || "-"}
-</b>
+🚗 <b>${safe(x.customer.vehicle || "-")}</b>
 
-<br>
+<br>👤 ${safe(x.customer.name || "-")}
 
-👤
-${x.customer.name || "-"}
+<br>📱 ${safe(x.customer.mobile || "-")}
 
-<br>
+<br>💰 ₹${safe(x.customer.pending || "0")}
 
-📱
-${x.customer.mobile || "-"}
-
-<br>
-
-💰 Pending:
-₹${x.customer.pending || "0"}
-
-<br>
-
-📊 Match:
-${x.score}%
-
-<br>
+<br>📊 Match: ${x.score}%
 
 <button
-onclick="selectCustomer('${x.customer.vehicle}')"
+onclick="selectCustomer('${encodeURIComponent(x.customer.vehicle || "")}')"
 >
-
-Select Customer
-
+Select
 </button>
 
 </div>
@@ -566,18 +512,12 @@ Select Customer
 
 });
 
-
 return;
 
 }
 
 
-
-/* =====================================================
-   NO MATCH
-===================================================== */
-
-box.innerHTML = `
+box.innerHTML=`
 
 <div class="result">
 
@@ -585,12 +525,8 @@ box.innerHTML = `
 
 <br><br>
 
-<button
-onclick="useVehicle('${q}')"
->
-
+<button onclick="useVehicle('${encodeURIComponent(q)}')">
 ➕ New Customer Add करा
-
 </button>
 
 </div>
@@ -600,74 +536,51 @@ onclick="useVehicle('${q}')"
 }
 
 
-
 /* =====================================================
-   SELECT SMART MATCH
+   SELECT CUSTOMER
 ===================================================== */
 
 function selectCustomer(vehicle){
 
-let c =
-customers.find(
-x => x.vehicle === vehicle
+vehicle=decodeURIComponent(vehicle);
+
+let c=customers.find(
+x=>x.vehicle===vehicle
 );
 
+if(!c)return;
 
-if(!c){
-return;
-}
+document.getElementById("searchBox").value=c.vehicle;
 
-
-document.getElementById(
-"searchBox"
-).value =
-c.vehicle;
-
-
-document.getElementById(
-"searchResult"
-).innerHTML = `
+document.getElementById("searchResult").innerHTML=`
 
 <div class="result">
 
-<b>
-✅ Customer Found
-</b>
+<b>✅ Customer Found</b>
 
 <hr>
 
-👤 Customer:
-${c.name || "-"}
+👤 ${safe(c.name || "-")}
 
-<br>
+<br>🚗 ${safe(c.vehicle || "-")}
 
-🚗 Vehicle:
-${c.vehicle || "-"}
+<br>📱 ${safe(c.mobile || "-")}
 
-<br>
+<br>💰 ₹${safe(c.pending || "0")}
 
-📱 Mobile:
-${c.mobile || "-"}
+<br>📅 ${safe(c.dueDate || "-")}
 
-<br>
+<br>📄 ${safe(c.agreement || "-")}
 
-💰 Pending:
-₹${c.pending || "0"}
-
-<br>
-
-📌 Status:
-${c.status || "-"}
+<br>📌 ${safe(c.status || "-")}
 
 <br><br>
 
 <button
 class="green"
-onclick="paymentFor('${c.name}')"
+onclick="paymentFor('${encodeURIComponent(c.name || "")}')"
 >
-
 💰 Add Payment
-
 </button>
 
 </div>
@@ -677,159 +590,157 @@ onclick="paymentFor('${c.name}')"
 }
 
 
-
 /* =====================================================
-   CAMERA SCAN
+   CAMERA
 ===================================================== */
 
 function startCamera(){
 
-let input =
-document.createElement(
-"input"
-);
+let input=document.createElement("input");
 
+input.type="file";
+input.accept="image/*";
+input.capture="environment";
 
-input.type = "file";
+input.onchange=function(){
 
-input.accept =
-"image/*";
+if(input.files && input.files.length){
 
-input.capture =
-"environment";
-
-
-input.onchange =
-function(){
-
-if(
-input.files &&
-input.files.length
-){
-
-runOCR(
-input.files[0]
-);
+runOCR(input.files[0]);
 
 }
 
 };
-
 
 input.click();
 
 }
 
 
-
 /* =====================================================
-   GALLERY SCAN
+   GALLERY
 ===================================================== */
 
 function scanFromGallery(){
 
-let input =
-document.createElement(
-"input"
-);
+let input=document.createElement("input");
 
+input.type="file";
+input.accept="image/*";
 
-input.type = "file";
+input.onchange=function(){
 
-input.accept =
-"image/*";
+if(input.files && input.files.length){
 
-
-input.onchange =
-function(){
-
-if(
-input.files &&
-input.files.length
-){
-
-runOCR(
-input.files[0]
-);
+runOCR(input.files[0]);
 
 }
 
 };
-
 
 input.click();
 
 }
 
 
+/* =====================================================
+   DOCUMENT UPLOAD
+===================================================== */
+
+function scanDocument(){
+
+let input=document.createElement("input");
+
+input.type="file";
+
+input.accept=
+"image/*,.pdf,.txt,.csv";
+
+input.onchange=function(){
+
+if(input.files && input.files.length){
+
+let file=input.files[0];
+
+if(file.type==="application/pdf"){
+
+alert(
+"PDF OCR साठी PDF मधील page चा screenshot/photo upload करा."
+);
+
+return;
+
+}
+
+runOCR(file);
+
+}
+
+};
+
+input.click();
+
+}
+
 
 /* =====================================================
-   OCR SCAN
+   OCR
 ===================================================== */
 
 async function runOCR(file){
 
-let box =
-document.getElementById(
-"searchResult"
-);
+let status=document
+.getElementById("ocrStatus");
+
+let results=document
+.getElementById("ocrResults");
 
 
-box.innerHTML = `
+status.innerHTML=`
 
-<div class="result">
+<div class="scanbox loading">
 
-📷 <b>Vehicle Scan सुरू आहे...</b>
+📷 <b>OCR Scan सुरू आहे...</b>
 
 <br><br>
 
-OCR photo मधील text वाचत आहे.
+Photo/document मधील text वाचत आहे.
 
 <br>
 
-कृपया थोडा वेळ थांबा.
+कृपया page बंद करू नका.
 
 </div>
 
 `;
 
+results.innerHTML="";
+
 
 try{
 
-
-const result =
-await Tesseract.recognize(
+const result=await Tesseract.recognize(
 
 file,
-
 "eng",
 
 {
 
 logger:function(info){
 
-if(
-info.status ===
-"recognizing text"
-){
+if(info.status==="recognizing text"){
 
-let percent =
-Math.round(
-(info.progress || 0)
-*100
+let percent=Math.round(
+(info.progress || 0)*100
 );
 
+status.innerHTML=`
 
-box.innerHTML = `
+<div class="scanbox">
 
-<div class="result">
-
-📷 Vehicle Scan
-
+🔍 OCR Reading...
 <br>
-
-🔍 OCR Progress:
-${percent}%
+<b>${percent}%</b>
 
 </div>
 
@@ -844,93 +755,59 @@ ${percent}%
 );
 
 
+let rawText=result.data.text || "";
 
-let rawText =
-result.data.text || "";
-
-
-let cleaned =
-normalizeVehicle(
-rawText
-);
-
-
-/* =================================================
-   INDIAN VEHICLE NUMBER DETECTION
-================================================= */
-
-let matches =
-cleaned.match(
-
-/[A-Z]{2}[0-9]{1,2}[A-Z]{1,3}[0-9]{3,4}/g
-
-);
-
-
-let detected =
-matches &&
-matches.length
-?
-matches[0]
-:
-cleaned;
-
-
-
-/* SEARCH OCR RESULT */
-
-document.getElementById(
-"searchBox"
-).value =
-detected;
-
-
-searchCustomer();
-
-
-
-/* =================================================
-   IF OCR FAILED
-================================================= */
-
-if(!matches){
-
-box.innerHTML += `
+status.innerHTML=`
 
 <div class="result">
 
-⚠️ पूर्ण vehicle number
-स्पष्टपणे वाचता आला नाही.
-
-<br><br>
-
-OCR ने वाचलेला text:
+✅ <b>OCR Complete</b>
 
 <br>
 
-<b>
-${rawText || "No text detected"}
-</b>
-
-<br><br>
-
-नंबर search box मध्ये manually
-correct करून search करू शकता.
+Text successfully read.
 
 </div>
 
 `;
 
-}
+
+/* PARSE DATA */
+
+let records=parseCustomerData(rawText);
+
+
+/* SHOW RAW TEXT */
+
+results.innerHTML=`
+
+<div class="card">
+
+<h3>📄 OCR Result</h3>
+
+<textarea
+id="rawOCR"
+>${safe(rawText)}</textarea>
+
+<button onclick="parseAgain()">
+🔄 Re-Read Details
+</button>
+
+</div>
+
+`;
+
+
+/* SHOW DETECTED CUSTOMERS */
+
+renderOCRRecords(records);
 
 
 }catch(error){
 
-
 console.log(error);
 
-
-box.innerHTML = `
+status.innerHTML=`
 
 <div class="result">
 
@@ -938,9 +815,7 @@ box.innerHTML = `
 
 <br><br>
 
-Vehicle number plate चा
-clear आणि जवळून photo घेऊन
-पुन्हा try करा.
+Photo clear करून पुन्हा try करा.
 
 </div>
 
@@ -950,6 +825,452 @@ clear आणि जवळून photo घेऊन
 
 }
 
+
+/* =====================================================
+   PARSE CUSTOMER DATA
+===================================================== */
+
+function parseCustomerData(text){
+
+let lines=text
+.split(/\r?\n/)
+.map(x=>x.trim())
+.filter(x=>x.length>1);
+
+
+/* remove duplicate lines */
+
+lines=[...new Set(lines)];
+
+
+/* detect mobile */
+
+let mobiles=
+text.match(
+/(?:\+91[\s-]?)?[6-9]\d{9}/g
+) || [];
+
+
+/* detect vehicle */
+
+let vehicleMatches=
+text
+.toUpperCase()
+.match(
+/[A-Z]{2}[\s-]?[0-9]{1,2}[\s-]?[A-Z]{1,3}[\s-]?[0-9]{3,4}/g
+) || [];
+
+
+/* detect money */
+
+let amounts=
+text.match(
+/(?:₹|RS\.?|INR)?\s?[\d,]+(?:\.\d{1,2})?/gi
+) || [];
+
+
+/* clean */
+
+mobiles=mobiles.map(x=>
+x.replace(/\D/g,"").slice(-10)
+);
+
+vehicleMatches=vehicleMatches.map(x=>
+normalizeVehicle(x)
+);
+
+amounts=amounts
+.map(x=>
+x.replace(/[^\d.]/g,"")
+)
+.filter(x=>x);
+
+
+/* try row-wise detection */
+
+let records=[];
+
+
+/*
+If vehicle numbers exist,
+create one customer record for
+each detected vehicle.
+*/
+
+if(vehicleMatches.length){
+
+vehicleMatches.forEach((vehicle,index)=>{
+
+let mobile=mobiles[index] || "";
+
+let amount=amounts[index] || "";
+
+
+/*
+Find nearby line as possible name
+*/
+
+let name="";
+
+let vehicleIndex=lines.findIndex(
+line=>
+normalizeVehicle(line)
+.includes(vehicle)
+);
+
+
+if(vehicleIndex>0){
+
+let previous=lines[vehicleIndex-1];
+
+if(
+previous &&
+!/\d{6,}/.test(previous) &&
+previous.length<80
+){
+
+name=cleanName(previous);
+
+}
+
+}
+
+
+/*
+If name not found,
+look at first useful lines.
+*/
+
+if(!name){
+
+let candidates=lines.filter(line=>{
+
+return(
+line.length>=3 &&
+line.length<=60 &&
+!/\d{6,}/.test(line) &&
+!/vehicle|mobile|phone|amount|pending|customer|name/i.test(line)
+);
+
+});
+
+name=candidates[index] || "";
+
+}
+
+
+records.push({
+
+name:name,
+
+vehicle:vehicle,
+
+mobile:mobile,
+
+pending:amount,
+
+dueDate:"",
+
+agreement:"",
+
+address:"",
+
+status:"Pending"
+
+});
+
+});
+
+}
+
+
+/*
+If no vehicle detected,
+try to create one record from
+available text.
+*/
+
+if(!records.length){
+
+let name="";
+
+let possibleName=lines.find(line=>{
+
+return(
+line.length>=3 &&
+line.length<=60 &&
+!/^\d+$/.test(line) &&
+!/vehicle|mobile|phone|amount|pending|customer|name/i.test(line)
+);
+
+});
+
+name=possibleName || "";
+
+records.push({
+
+name:name,
+
+vehicle:vehicleMatches[0] || "",
+
+mobile:mobiles[0] || "",
+
+pending:amounts[0] || "",
+
+dueDate:"",
+
+agreement:"",
+
+address:"",
+
+status:"Pending"
+
+});
+
+}
+
+return records;
+
+}
+
+
+/* =====================================================
+   CLEAN NAME
+===================================================== */
+
+function cleanName(text){
+
+return text
+.replace(
+/(customer|name|vehicle|mobile|phone|amount|pending)\s*[:\-]/ig,
+""
+)
+.trim();
+
+}
+
+
+/* =====================================================
+   RENDER OCR RECORDS
+===================================================== */
+
+function renderOCRRecords(records){
+
+let box=document.getElementById("ocrResults");
+
+box.innerHTML+=`
+
+<div class="card">
+
+<h3>👥 Detected Customer Details</h3>
+
+<div class="small">
+
+OCR ने खाली किंवा चुकीची माहिती ओळखली असेल तर
+Save करण्यापूर्वी ती edit करा.
+
+</div>
+
+</div>
+
+`;
+
+
+records.forEach((r,index)=>{
+
+box.innerHTML+=`
+
+<div class="customer-edit">
+
+<h4>
+Customer ${index+1}
+</h4>
+
+<label>Customer Name</label>
+
+<input
+id="ocrName${index}"
+value="${safe(r.name)}"
+>
+
+<label>Vehicle Number</label>
+
+<input
+id="ocrVehicle${index}"
+value="${safe(r.vehicle)}"
+>
+
+<label>Mobile Number</label>
+
+<input
+id="ocrMobile${index}"
+value="${safe(r.mobile)}"
+>
+
+<label>Pending Amount</label>
+
+<input
+id="ocrPending${index}"
+type="number"
+value="${safe(r.pending)}"
+>
+
+<label>Due Date</label>
+
+<input
+id="ocrDue${index}"
+type="date"
+value="${safe(r.dueDate)}"
+>
+
+<label>Agreement / Loan Number</label>
+
+<input
+id="ocrAgreement${index}"
+value="${safe(r.agreement)}"
+>
+
+<label>Address</label>
+
+<textarea
+id="ocrAddress${index}"
+>${safe(r.address)}</textarea>
+
+<label>Status</label>
+
+<select id="ocrStatus${index}">
+
+<option value="Pending">Pending</option>
+<option value="Promise">Payment Promise</option>
+<option value="Paid">Paid</option>
+<option value="Vehicle">Vehicle Handover</option>
+
+</select>
+
+<button
+class="green"
+onclick="saveOCRCustomer(${index})"
+>
+✅ Save This Customer
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* =====================================================
+   SAVE OCR CUSTOMER
+===================================================== */
+
+function saveOCRCustomer(index){
+
+let customer={
+
+name:document.getElementById(
+"ocrName"+index
+).value.trim(),
+
+vehicle:normalizeVehicle(
+document.getElementById(
+"ocrVehicle"+index
+).value
+),
+
+mobile:document.getElementById(
+"ocrMobile"+index
+).value.trim(),
+
+pending:document.getElementById(
+"ocrPending"+index
+).value.trim(),
+
+dueDate:document.getElementById(
+"ocrDue"+index
+).value,
+
+agreement:document.getElementById(
+"ocrAgreement"+index
+).value.trim(),
+
+address:document.getElementById(
+"ocrAddress"+index
+).value.trim(),
+
+status:document.getElementById(
+"ocrStatus"+index
+).value
+
+};
+
+
+if(!customer.name && !customer.vehicle){
+
+alert(
+"Customer Name किंवा Vehicle Number आवश्यक आहे."
+);
+
+return;
+
+}
+
+
+/* DUPLICATE */
+
+let duplicate=customers.find(c=>{
+
+return(
+customer.vehicle &&
+normalizeVehicle(c.vehicle)===customer.vehicle
+);
+
+});
+
+
+if(duplicate){
+
+if(
+confirm(
+"⚠️ हा vehicle आधीच list मध्ये आहे.\n\nExisting customer update करायचा का?"
+)
+){
+
+Object.assign(
+duplicate,
+customer
+);
+
+saveData();
+displayCustomers();
+
+alert("✅ Existing customer updated.");
+
+return;
+
+}
+
+return;
+
+}
+
+
+/* SAVE */
+
+customers.push(customer);
+
+saveData();
+
+displayCustomers();
+
+alert(
+"✅ Customer successfully saved."
+);
+
+}
 
 
 /* =====================================================
@@ -958,45 +1279,41 @@ clear आणि जवळून photo घेऊन
 
 function addCustomer(){
 
-let name =
-document.getElementById(
-"customerName"
-).value.trim();
+let name=document
+.getElementById("customerName")
+.value.trim();
 
-
-let vehicle =
-normalizeVehicle(
-
-document.getElementById(
-"vehicleNumber"
-).value
-
+let vehicle=normalizeVehicle(
+document.getElementById("vehicleNumber")
+.value
 );
 
+let mobile=document
+.getElementById("mobile")
+.value.trim();
 
-let mobile =
-document.getElementById(
-"mobile"
-).value.trim();
+let pending=document
+.getElementById("pending")
+.value;
+
+let dueDate=document
+.getElementById("dueDate")
+.value;
+
+let agreement=document
+.getElementById("agreement")
+.value.trim();
+
+let address=document
+.getElementById("address")
+.value.trim();
+
+let status=document
+.getElementById("status")
+.value;
 
 
-let pending =
-document.getElementById(
-"pending"
-).value;
-
-
-let status =
-document.getElementById(
-"status"
-).value;
-
-
-
-if(
-!name &&
-!vehicle
-){
+if(!name && !vehicle){
 
 alert(
 "Customer name किंवा vehicle number टाका."
@@ -1007,15 +1324,10 @@ return;
 }
 
 
-
-/* DUPLICATE CHECK */
-
-let already =
-customers.find(
-c =>
-normalizeVehicle(c.vehicle)
-=== vehicle &&
-vehicle !== ""
+let already=customers.find(
+c=>
+vehicle &&
+normalizeVehicle(c.vehicle)===vehicle
 );
 
 
@@ -1030,17 +1342,15 @@ return;
 }
 
 
-
 customers.push({
 
 name:name,
-
 vehicle:vehicle,
-
 mobile:mobile,
-
 pending:pending,
-
+dueDate:dueDate,
+agreement:agreement,
+address:address,
 status:status
 
 });
@@ -1048,37 +1358,27 @@ status:status
 
 saveData();
 
-
 alert(
 "✅ Customer successfully saved."
 );
 
 
-
-document.getElementById(
-"customerName"
-).value="";
-
-
-document.getElementById(
-"vehicleNumber"
-).value="";
-
-
-document.getElementById(
-"mobile"
-).value="";
-
-
-document.getElementById(
-"pending"
-).value="";
+[
+"customerName",
+"vehicleNumber",
+"mobile",
+"pending",
+"dueDate",
+"agreement",
+"address"
+].forEach(id=>{
+document.getElementById(id).value="";
+});
 
 
 displayCustomers();
 
 }
-
 
 
 /* =====================================================
@@ -1087,15 +1387,13 @@ displayCustomers();
 
 function displayCustomers(){
 
-let box =
-document.getElementById(
-"customerList"
-);
+let box=document
+.getElementById("customerList");
 
 
 if(!customers.length){
 
-box.innerHTML =
+box.innerHTML=
 "No customers added.";
 
 return;
@@ -1103,66 +1401,87 @@ return;
 }
 
 
-
-box.innerHTML =
-customers.map(
-(c,i)=>`
+box.innerHTML=customers
+.map((c,i)=>`
 
 <div class="result">
 
 <b>
-${i+1}.
-${c.name || "-"}
+${i+1}. ${safe(c.name || "-")}
 </b>
 
-<br>
+<br>🚗 Vehicle:
+${safe(c.vehicle || "-")}
 
-🚗 Vehicle:
-${c.vehicle || "-"}
+<br>📱 Mobile:
+${safe(c.mobile || "-")}
 
-<br>
+<br>💰 Pending:
+₹${safe(c.pending || "0")}
 
-📱 Mobile:
-${c.mobile || "-"}
+<br>📅 Due:
+${safe(c.dueDate || "-")}
 
-<br>
+<br>📄 Agreement:
+${safe(c.agreement || "-")}
 
-💰 Pending:
-₹${c.pending || "0"}
-
-<br>
-
-📌 Status:
-${c.status || "-"}
+<br>📌 Status:
+${safe(c.status || "-")}
 
 <br><br>
 
 <button
 class="green"
-onclick="paymentFor('${c.name}')"
+onclick="paymentFor('${encodeURIComponent(c.name || "")}')"
 >
-
 💰 Payment
-
 </button>
 
+<button
+onclick="editCustomer(${i})"
+>
+✏️ Edit
+</button>
 
 <button
 class="red"
 onclick="deleteCustomer(${i})"
 >
-
 Delete
-
 </button>
 
 </div>
 
-`
-).join("");
+`).join("");
 
 }
 
+
+/* =====================================================
+   EDIT CUSTOMER
+===================================================== */
+
+function editCustomer(index){
+
+let c=customers[index];
+
+document.getElementById("customerName").value=c.name || "";
+document.getElementById("vehicleNumber").value=c.vehicle || "";
+document.getElementById("mobile").value=c.mobile || "";
+document.getElementById("pending").value=c.pending || "";
+document.getElementById("dueDate").value=c.dueDate || "";
+document.getElementById("agreement").value=c.agreement || "";
+document.getElementById("address").value=c.address || "";
+document.getElementById("status").value=c.status || "Pending";
+
+document.getElementById("customerName")
+.scrollIntoView({behavior:"smooth"});
+
+alert(
+"Customer details वर edit करून Save Customer करा."
+);
+
+}
 
 
 /* =====================================================
@@ -1171,22 +1490,19 @@ Delete
 
 function paymentFor(name){
 
+name=decodeURIComponent(name);
+
 document.getElementById(
 "paymentCustomer"
-).value =
-name;
-
+).value=name;
 
 document.getElementById(
 "paymentCustomer"
 ).scrollIntoView({
-
 behavior:"smooth"
-
 });
 
 }
-
 
 
 /* =====================================================
@@ -1195,29 +1511,20 @@ behavior:"smooth"
 
 function savePayment(){
 
-let name =
-document.getElementById(
-"paymentCustomer"
-).value.trim();
+let name=document
+.getElementById("paymentCustomer")
+.value.trim();
+
+let amount=document
+.getElementById("paymentAmount")
+.value;
+
+let date=document
+.getElementById("paymentDate")
+.value;
 
 
-let amount =
-document.getElementById(
-"paymentAmount"
-).value;
-
-
-let date =
-document.getElementById(
-"paymentDate"
-).value;
-
-
-
-if(
-!name ||
-!amount
-){
+if(!name || !amount){
 
 alert(
 "Customer आणि payment amount टाका."
@@ -1228,49 +1535,33 @@ return;
 }
 
 
-
-let customer =
-customers.find(
-
-c =>
-(c.name || "")
-.toLowerCase()
-=== name.toLowerCase()
-
+let customer=customers.find(
+c=>
+(c.name || "").toLowerCase()
+===name.toLowerCase()
 );
-
 
 
 if(customer){
 
-let old =
-parseFloat(
+let old=parseFloat(
 customer.pending
-) || 0;
+)||0;
 
-
-let paid =
-parseFloat(
+let paid=parseFloat(
 amount
-) || 0;
+)||0;
 
-
-customer.pending =
-Math.max(
+customer.pending=Math.max(
 0,
 old-paid
 );
 
+if(customer.pending===0){
 
-if(
-customer.pending === 0
-){
-
-customer.status =
-"Paid";
+customer.status="Paid";
 
 }
-
 
 saveData();
 
@@ -1279,29 +1570,22 @@ displayCustomers();
 }
 
 
-
 document.getElementById(
 "paymentMessage"
-).innerHTML = `
+).innerHTML=`
 
 <div class="result">
 
 ✅ <b>Payment Saved</b>
 
 <br>
-
-Customer:
-${name}
+Customer: ${safe(name)}
 
 <br>
-
-Amount:
-₹${amount}
+Amount: ₹${safe(amount)}
 
 <br>
-
-Date:
-${date || "Today"}
+Date: ${safe(date || "Today")}
 
 </div>
 
@@ -1315,9 +1599,8 @@ document.getElementById(
 }
 
 
-
 /* =====================================================
-   DELETE CUSTOMER
+   DELETE
 ===================================================== */
 
 function deleteCustomer(index){
@@ -1328,11 +1611,7 @@ confirm(
 )
 ){
 
-customers.splice(
-index,
-1
-);
-
+customers.splice(index,1);
 
 saveData();
 
@@ -1343,63 +1622,61 @@ displayCustomers();
 }
 
 
-
 /* =====================================================
-   USE OCR / SEARCHED VEHICLE
+   USE VEHICLE
 ===================================================== */
 
 function useVehicle(vehicle){
 
+vehicle=decodeURIComponent(vehicle);
+
 document.getElementById(
 "vehicleNumber"
-).value =
-vehicle.toUpperCase();
-
+).value=vehicle.toUpperCase();
 
 document.getElementById(
 "vehicleNumber"
 ).scrollIntoView({
-
 behavior:"smooth"
-
 });
 
 }
 
 
-
 /* =====================================================
-   DOCUMENT
+   PARSE AGAIN
 ===================================================== */
 
-function documentSelected(){
+function parseAgain(){
 
-let file =
+let text=document
+.getElementById("rawOCR")
+.value;
+
+if(!text){
+
+alert("OCR text उपलब्ध नाही.");
+
+return;
+
+}
+
+let records=parseCustomerData(text);
+
 document.getElementById(
-"documentFile"
-).files[0];
+"ocrResults"
+).innerHTML="";
 
-
-if(file){
-
-alert(
-"📄 Document selected: "
-+
-file.name
-);
+renderOCRRecords(records);
 
 }
-
-}
-
 
 
 /* =====================================================
-   START APP
+   START
 ===================================================== */
 
 displayCustomers();
-
 
 </script>
 
