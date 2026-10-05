@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>Dev Finance Collection V2</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:#f1f5f9;
+  color:#0f172a;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+.app{min-height:100vh}
+
+.header{
+  background:#0f172a;
+  color:white;
+  padding:18px 20px;
+  position:sticky;
+  top:0;
+  z-index:50;
+  box-shadow:0 4px 15px #0002;
+}
+.header-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.logo{
+  width:44px;height:44px;
+  border-radius:12px;
+  background:#2563eb;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+}
+.brand h1{font-size:18px}
+.brand small{color:#94a3b8}
+
+.menu-btn{
+  background:#1e293b;
+  color:white;
+  border:1px solid #334155;
+  padding:10px 13px;
+  border-radius:10px;
+}
+
+.layout{display:flex}
+
+.sidebar{
+  width:240px;
+  min-height:calc(100vh - 80px);
+  background:#fff;
+  border-right:1px solid #e2e8f0;
+  padding:20px 14px;
+  position:fixed;
+  left:0;
+  top:80px;
+  bottom:0;
+  overflow:auto;
+}
+.nav-btn{
+  width:100%;
+  border:0;
+  background:transparent;
+  padding:13px 14px;
+  margin-bottom:6px;
+  border-radius:10px;
+  text-align:left;
+  color:#475569;
+  font-weight:600;
+}
+.nav-btn:hover,.nav-btn.active{
+  background:#eff6ff;
+  color:#2563eb;
+}
+
+.main{
+  margin-left:240px;
+  padding:25px;
+  width:calc(100% - 240px);
+}
+
+.page-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:22px;
+  gap:15px;
+}
+.page-title h2{font-size:25px}
+.page-title p{color:#64748b;margin-top:4px}
+
+.primary{
+  border:0;
+  background:#2563eb;
+  color:white;
+  padding:11px 16px;
+  border-radius:10px;
+  font-weight:700;
+}
+.primary:hover{background:#1d4ed8}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:25px;
+}
+.card{
+  background:white;
+  border:1px solid #e2e8f0;
+  border-radius:15px;
+  padding:20px;
+  box-shadow:0 3px 10px #00000008;
+}
+.stat-label{color:#64748b;font-size:13px}
+.stat-value{font-size:28px;font-weight:800;margin-top:8px}
+.stat-icon{font-size:22px}
+
+.panel{
+  background:white;
+  border:1px solid #e2e8f0;
+  border-radius:15px;
+  padding:20px;
+  margin-bottom:20px;
+}
+.panel h3{margin-bottom:15px}
+
+.search{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
+  outline:none;
+  margin-bottom:15px;
+}
+.search:focus,input:focus,select:focus,textarea:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px #2563eb18;
+}
+
+.table-wrap{overflow-x:auto}
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:700px;
+}
+th,td{
+  padding:13px 10px;
+  border-bottom:1px solid #e2e8f0;
+  text-align:left;
+}
+th{
+  background:#f8fafc;
+  color:#475569;
+  font-size:13px;
+}
+td{font-size:14px}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+}
+.pending{background:#fef3c7;color:#92400e}
+.paid{background:#dcfce7;color:#166534}
+.follow{background:#dbeafe;color:#1d4ed8}
+.overdue{background:#fee2e2;color:#991b1b}
+
+.actions{display:flex;gap:7px}
+.small-btn{
+  border:1px solid #cbd5e1;
+  background:white;
+  padding:7px 9px;
+  border-radius:7px;
+}
+.small-btn:hover{background:#f8fafc}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+.field label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:6px;
+  color:#475569;
+}
+.field input,.field select,.field textarea{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  outline:none;
+}
+.field textarea{min-height:90px;resize:vertical}
+
+.full{grid-column:1/-1}
+
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:18px;
+}
+
+.secondary{
+  border:1px solid #cbd5e1;
+  background:white;
+  padding:11px 16px;
+  border-radius:9px;
+  font-weight:600;
+}
+
+.empty{
+  padding:35px;
+  text-align:center;
+  color:#64748b;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0008;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:100;
+}
+.modal.show{display:flex}
+.modal-box{
+  background:white;
+  width:min(700px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:16px;
+  padding:22px;
+}
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.close{
+  border:0;
+  background:#f1f5f9;
+  width:36px;height:36px;
+  border-radius:50%;
+  font-size:20px;
+}
+
+.section{display:none}
+.section.active{display:block}
+
+.toast{
+  position:fixed;
+  bottom:25px;
+  right:20px;
+  background:#0f172a;
+  color:white;
+  padding:13px 17px;
+  border-radius:10px;
+  display:none;
+  z-index:200;
+}
+.toast.show{display:block}
+
+@media(max-width:900px){
+  .sidebar{
+    width:210px;
+  }
+  .main{
+    margin-left:210px;
+    width:calc(100% - 210px);
+  }
+  .cards{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:650px){
+  .sidebar{
+    position:fixed;
+    transform:translateX(-100%);
+    transition:.25s;
+    z-index:80;
+    width:250px;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .main{
+    margin-left:0;
+    width:100%;
+    padding:15px;
+  }
+  .cards{grid-template-columns:1fr 1fr;gap:10px}
+  .card{padding:14px}
+  .stat-value{font-size:22px}
+  .form-grid{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  .page-title{align-items:flex-start}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+  <div class="header-row">
+    <div class="brand">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="logo">DF</div>
+      <div>
+        <h1>Dev Finance Collection</h1>
+        <small>Professional Collection Management • V2</small>
+      </div>
+    </div>
+    <div>
+      <button class="menu-btn" onclick="openCustomerModal()">＋ Customer</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <button class="nav-btn active" onclick="showSection('dashboard',this)">🏠 Dashboard</button>
+  <button class="nav-btn" onclick="showSection('customers',this)">👥 Customers</button>
+  <button class="nav-btn" onclick="showSection('vehicles',this)">🚗 Vehicles</button>
+  <button class="nav-btn" onclick="showSection('payments',this)">💰 Payments</button>
+  <button class="nav-btn" onclick="showSection('followups',this)">📅 Follow-ups</button>
+  <button class="nav-btn" onclick="showSection('reports',this)">📊 Reports</button>
+  <button class="nav-btn" onclick="showSection('settings',this)">⚙️ Settings</button>
+</aside>
+
+<main class="main">
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="section active">
+
+<div class="page-title">
+  <div>
+    <h2>Dashboard</h2>
+    <p>Collection activity overview</p>
+  </div>
+  <button class="primary" onclick="openCustomerModal()">＋ Add Customer</button>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="stat-icon">👥</div>
+    <div class="stat-label">Total Customers</div>
+    <div class="stat-value" id="totalCustomers">0</div>
+  </div>
+
+  <div class="card">
+    <div class="stat-icon">⏳</div>
+    <div class="stat-label">Pending</div>
+    <div class="stat-value" id="pendingCustomers">0</div>
+  </div>
+
+  <div class="card">
+    <div class="stat-icon">💰</div>
+    <div class="stat-label">Total Promised</div>
+    <div class="stat-value" id="totalPromised">₹0</div>
+  </div>
+
+  <div class="card">
+    <div class="stat-icon">📅</div>
+    <div class="stat-label">Today's Follow-ups</div>
+    <div class="stat-value" id="todayFollowups">0</div>
+  </div>
+</div>
+
+<div class="panel">
+  <h3>🔍 Smart Customer Search</h3>
+  <input class="search" id="dashboardSearch"
+    placeholder="Search name, mobile, vehicle number, agreement..."
+    oninput="dashboardSearch()">
+  <div id="dashboardResults"></div>
+</div>
+
+<div class="panel">
+  <h3>Recent Customers</h3>
+  <div id="recentCustomers"></div>
+</div>
+
+</section>
+
+
+<!-- CUSTOMERS -->
+<section id="customers" class="section">
+
+<div class="page-title">
+  <div>
+    <h2>Customer Management</h2>
+    <p>Manage customer records and collection status</p>
+  </div>
+  <button class="primary" onclick="openCustomerModal()">＋ Add Customer</button>
+</div>
+
+<div class="panel">
+  <input class="search" id="customerSearch"
+    placeholder="Search customer..."
+    oninput="renderCustomers()">
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Mobile</th>
+          <th>Vehicle</th>
+          <th>Promise</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="customerTable"></tbody>
+    </table>
+  </div>
+</div>
+
+</section>
+
+
+<!-- VEHICLES -->
+<section id="vehicles" class="section">
+
+<div class="page-title">
+  <div>
+    <h2>Vehicle Management</h2>
+    <p>Vehicle records and identification</p>
+  </div>
+</div>
+
+<div class="panel">
+  <input class="search" id="vehicleSearch"
+    placeholder="Search vehicle number / customer..."
+    oninput="renderVehicles()">
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Vehicle Number</th>
+          <th>Customer</th>
+          <th>Vehicle</th>
+          <th>Agreement</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="vehicleTable"></tbody>
+    </table>
+  </div>
+</div>
+
+</section>
+
+
+<!-- PAYMENTS -->
+<section id="payments" class="section">
+
+<div class="page-title">
+  <div>
+    <h2>Payment Management</h2>
+    <p>Promises and collection entries</p>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Promise Date</th>
+          <th>Promised Amount</th>
+          <th>Collected</th>
+          <th>Balance</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="paymentTable"></tbody>
+    </table>
+  </div>
+</div>
+
+</section>
+
+
+<!-- FOLLOW UPS -->
+<section id="followups" class="section">
+
+<div class="page-title">
+  <div>
+    <h2>Follow-ups</h2>
+    <p>Today's and upcoming customer follow-ups</p>
+  </div>
+</div>
+
+<div class="panel">
+  <h3>📅 Today's Follow-ups</h3>
+  <div id="followupList"></div>
+</div>
+
+</section>
+
+
+<!-- REPORTS -->
+<section id="reports" class="section">
+
+<div class="page-title">
+  <div>
+    <h2>Collection Reports</h2>
+    <p>Quick performance summary</p>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="stat-label">Customers</div>
+    <div class="stat-value" id="reportCustomers">0</div>
+  </div>
+  <div class="card">
+    <div class="stat-label">Promised</div>
+    <div class="stat-value" id="reportPromised">₹0</div>
+  </div>
+  <div class="card">
+    <div class="stat-label">Collected</div>
+    <div class="stat-value" id="reportCollected">₹0</div>
+  </div>
+  <div class="card">
+    <div class="stat-label">Outstanding</div>
+    <div class="stat-value" id="reportOutstanding">₹0</div>
+  </div>
+</div>
+
+<div class="panel">
+  <h3>Collection Summary</h3>
+  <div id="reportSummary"></div>
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+<section id="settings" class="section">
+
+<div class="page-title">
+  <div>
+    <h2>Settings</h2>
+    <p>Application and data controls</p>
+  </div>
+</div>
+
+<div class="panel">
+  <h3>Data Management</h3>
+  <p style="color:#64748b;margin-bottom:15px">
+    Customer data is currently stored locally in this browser.
+  </p>
+
+  <button class="primary" onclick="exportData()">Export Data</button>
+  <button class="secondary" onclick="clearAllData()">Clear All Data</button>
+</div>
+
+</section>
+
+</main>
+</div>
+</div>
+
+
+<!-- CUSTOMER MODAL -->
+<div class="modal" id="customerModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+  <h2 id="modalTitle">Add Customer</h2>
+  <button class="close" onclick="closeCustomerModal()">×</button>
+</div>
+
+<form id="customerForm">
+
+<input type="hidden" id="customerId">
+
+<div class="form-grid">
+
+<div class="field">
+<label>Customer Name *</label>
+<input id="name" required placeholder="Enter customer name">
+</div>
+
+<div class="field">
+<label>Mobile Number</label>
+<input id="mobile" inputmode="numeric" placeholder="Enter mobile number">
+</div>
+
+<div class="field">
+<label>Vehicle Number</label>
+<input id="vehicleNumber" placeholder="MH 00 AA 0000">
+</div>
+
+<div class="field">
+<label>Vehicle Model</label>
+<input id="vehicleModel" placeholder="Vehicle model">
+</div>
+
+<div class="field">
+<label>Agreement Number</label>
+<input id="agreement" placeholder="Agreement number">
+</div>
+
+<div class="field">
+<label>Promise Date</label>
+<input id="promiseDate" type="date">
+</div>
+
+<div class="field">
+<label>Promised Amount ₹</label>
+<input id="promisedAmount" type="number" min="0" placeholder="0">
+</div>
+
+<div class="field">
+<label>Collected Amount ₹</label>
+<input id="collectedAmount" type="number" min="0" placeholder="0">
+</div>
+
+<div class="field">
+<label>Status</label>
+<select id="status">
+  <option value="Pending">Pending</option>
+  <option value="Follow-up">Follow-up</option>
+  <option value="Paid">Paid</option>
+  <option value="Overdue">Overdue</option>
+</select>
+</div>
+
+<div class="field">
+<label>Vehicle Handover</label>
+<select id="handover">
+  <option value="No">No</option>
+  <option value="Yes">Yes</option>
+</select>
+</div>
+
+<div class="field full">
+<label>Customer Response / Notes</label>
+<textarea id="notes" placeholder="Enter customer response, promise details, follow-up notes..."></textarea>
+</div>
+
+</div>
+
+<div class="form-actions">
+  <button type="button" class="secondary" onclick="closeCustomerModal()">Cancel</button>
+  <button type="submit" class="primary">Save Customer</button>
+</div>
+
+</form>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+const STORAGE_KEY = "dev_finance_collection_v2";
+
+let customers = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+function saveData(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
+}
+
+function money(value){
+  return "₹" + Number(value || 0).toLocaleString("en-IN");
+}
+
+function today(){
+  return new Date().toISOString().split("T")[0];
+}
+
+function showToast(message){
+  const toast=document.getElementById("toast");
+  toast.textContent=message;
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },2500);
+}
+
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("open");
+}
+
+function showSection(id,btn){
+
+  document.querySelectorAll(".section").forEach(section=>{
+    section.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".nav-btn").forEach(b=>{
+    b.classList.remove("active");
+  });
+
+  if(btn) btn.classList.add("active");
+
+  document.getElementById("sidebar").classList.remove("open");
+
+  renderAll();
+}
+
+
+function openCustomerModal(customer=null){
+
+  document.getElementById("customerModal").classList.add("show");
+
+  document.getElementById("customerForm").reset();
+
+  document.getElementById("customerId").value="";
+
+  document.getElementById("modalTitle").textContent =
+    customer ? "Edit Customer" : "Add Customer";
+
+  if(customer){
+
+    document.getElementById("customerId").value=customer.id;
+    document.getElementById("name").value=customer.name || "";
+    document.getElementById("mobile").value=customer.mobile || "";
+    document.getElementById("vehicleNumber").value=customer.vehicleNumber || "";
+    document.getElementById("vehicleModel").value=customer.vehicleModel || "";
+    document.getElementById("agreement").value=customer.agreement || "";
+    document.getElementById("promiseDate").value=customer.promiseDate || "";
+    document.getElementById("promisedAmount").value=customer.promisedAmount || "";
+    document.getElementById("collectedAmount").value=customer.collectedAmount || "";
+    document.getElementById("status").value=customer.status || "Pending";
+    document.getElementById("handover").value=customer.handover || "No";
+    document.getElementById("notes").value=customer.notes || "";
+
+  }
+}
+
+function closeCustomerModal(){
+  document.getElementById("customerModal").classList.remove("show");
+}
+
+
+document.getElementById("customerForm").addEventListener("submit",function(e){
+
+  e.preventDefault();
+
+  const id=document.getElementById("customerId").value;
+
+  const data={
+    id:id || Date.now().toString(),
+
+    name:document.getElementById("name").value.trim(),
+
+    mobile:document.getElementById("mobile").value.trim(),
+
+    vehicleNumber:document.getElementById("vehicleNumber").value.trim().toUpperCase(),
+
+    vehicleModel:document.getElementById("vehicleModel").value.trim(),
+
+    agreement:document.getElementById("agreement").value.trim(),
+
+    promiseDate:document.getElementById("promiseDate").value,
+
+    promisedAmount:Number(document.getElementById("promisedAmount").value || 0),
+
+    collectedAmount:Number(document.getElementById("collectedAmount").value || 0),
+
+    status:document.getElementById("status").value,
+
+    handover:document.getElementById("handover").value,
+
+    notes:document.getElementById("notes").value.trim(),
+
+    updatedAt:new Date().toISOString()
+  };
+
+  if(id){
+
+    const index=customers.findIndex(c=>c.id===id);
+
+    if(index!==-1) customers[index]=data;
+
+    showToast("Customer updated successfully");
+
+  }else{
+
+    customers.unshift(data);
+
+    showToast("Customer added successfully");
+  }
+
+  saveData();
+  closeCustomerModal();
+  renderAll();
+});
+
+
+function deleteCustomer(id){
+
+  const customer=customers.find(c=>c.id===id);
+
+  if(!customer) return;
+
+  if(confirm("Delete " + customer.name + " ?")){
+
+    customers=customers.filter(c=>c.id!==id);
+
+    saveData();
+    renderAll();
+
+    showToast("Customer deleted");
+  }
+}
+
+
+function statusBadge(status){
+
+  let cls="pending";
+
+  if(status==="Paid") cls="paid";
+  if(status==="Follow-up") cls="follow";
+  if(status==="Overdue") cls="overdue";
+
+  return `<span class="badge ${cls}">${status}</span>`;
+}
+
+
+function renderCustomers(){
+
+  const query=(document.getElementById("customerSearch")?.value || "")
+    .toLowerCase()
+    .trim();
+
+  const filtered=customers.filter(c=>
+    `${c.name} ${c.mobile} ${c.vehicleNumber} ${c.agreement}`
+      .toLowerCase()
+      .includes(query)
+  );
+
+  const tbody=document.getElementById("customerTable");
+
+  if(!filtered.length){
+
+    tbody.innerHTML=`
+      <tr>
+        <td colspan="7">
+          <div class="empty">No customers found.</div>
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  tbody.innerHTML=filtered.map(c=>`
+
+    <tr>
+
+      <td>
+        <strong>${escapeHTML(c.name)}</strong>
+      </td>
+
+      <td>${escapeHTML(c.mobile || "-")}</td>
+
+      <td>${escapeHTML(c.vehicleNumber || "-")}</td>
+
+      <td>${c.promiseDate || "-"}</td>
+
+      <td>${money(c.promisedAmount)}</td>
+
+      <td>${statusBadge(c.status)}</td>
+
+      <td>
+        <div class="actions">
+          <button class="small-btn"
+            onclick='editCustomer("${c.id}")'>Edit</button>
+
+          <button class="small-btn"
+            onclick='deleteCustomer("${c.id}")'>Delete</button>
+        </div>
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+function editCustomer(id){
+
+  const customer=customers.find(c=>c.id===id);
+
+  if(customer) openCustomerModal(customer);
+}
+
+
+function renderVehicles(){
+
+  const query=(document.getElementById("vehicleSearch")?.value || "")
+    .toLowerCase();
+
+  const list=customers.filter(c=>
+    `${c.vehicleNumber} ${c.name} ${c.vehicleModel}`
+      .toLowerCase()
+      .includes(query)
+  );
+
+  const tbody=document.getElementById("vehicleTable");
+
+  if(!list.length){
+
+    tbody.innerHTML=`
+      <tr>
+        <td colspan="5">
+          <div class="empty">No vehicle records found.</div>
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  tbody.innerHTML=list.map(c=>`
+
+    <tr>
+      <td><strong>${escapeHTML(c.vehicleNumber || "-")}</strong></td>
+      <td>${escapeHTML(c.name)}</td>
+      <td>${escapeHTML(c.vehicleModel || "-")}</td>
+      <td>${escapeHTML(c.agreement || "-")}</td>
+      <td>${statusBadge(c.status)}</td>
+    </tr>
+
+  `).join("");
+}
+
+
+function renderPayments(){
+
+  const tbody=document.getElementById("paymentTable");
+
+  if(!customers.length){
+
+    tbody.innerHTML=`
+      <tr>
+        <td colspan="6">
+          <div class="empty">No payment records.</div>
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  tbody.innerHTML=customers.map(c=>{
+
+    const balance=Math.max(
+      0,
+      Number(c.promisedAmount||0)-Number(c.collectedAmount||0)
+    );
+
+    return `
+
+      <tr>
+
+        <td><strong>${escapeHTML(c.name)}</strong></td>
+
+        <td>${c.promiseDate || "-"}</td>
+
+        <td>${money(c.promisedAmount)}</td>
+
+        <td>${money(c.collectedAmount)}</td>
+
+        <td>${money(balance)}</td>
+
+        <td>${statusBadge(c.status)}</td>
+
+      </tr>
+    `;
+
+  }).join("");
+}
+
+
+function renderFollowups(){
+
+  const list=document.getElementById("followupList");
+
+  const todayList=customers.filter(c=>
+    c.promiseDate===today() &&
+    c.status!=="Paid"
+  );
+
+  if(!todayList.length){
+
+    list.innerHTML=`
+      <div class="empty">
+        No follow-ups scheduled for today.
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML=todayList.map(c=>`
+
+    <div style="
+      padding:15px;
+      border:1px solid #e2e8f0;
+      border-radius:10px;
+      margin-bottom:10px;
+    ">
+
+      <strong>${escapeHTML(c.name)}</strong>
+
+      <div style="color:#64748b;margin-top:5px">
+        🚗 ${escapeHTML(c.vehicleNumber || "-")}
+        &nbsp; • &nbsp;
+        💰 ${money(c.promisedAmount)}
+      </div>
+
+      <div style="margin-top:8px">
+        ${statusBadge(c.status)}
+      </div>
+
+      <div style="margin-top:10px;color:#475569">
+        ${escapeHTML(c.notes || "No response note available.")}
+      </div>
+
+    </div>
+
+  `).join("");
+}
+
+
+function dashboardSearch(){
+
+  const query=document.getElementById("dashboardSearch")
+    .value
+    .toLowerCase()
+    .trim();
+
+  const box=document.getElementById("dashboardResults");
+
+  if(!query){
+
+    box.innerHTML="";
+    return;
+  }
+
+  const results=customers.filter(c=>
+    `${c.name} ${c.mobile} ${c.vehicleNumber} ${c.agreement} ${c.vehicleModel}`
+      .toLowerCase()
+      .includes(query)
+  );
+
+  if(!results.length){
+
+    box.innerHTML=`<div class="empty">No matching customer found.</div>`;
+    return;
+  }
+
+  box.innerHTML=results.map(c=>`
+
+    <div style="
+      border:1px solid #e2e8f0;
+      border-radius:10px;
+      padding:14px;
+      margin-bottom:8px;
+    ">
+
+      <strong>${escapeHTML(c.name)}</strong>
+
+      <div style="color:#64748b;margin-top:5px">
+        📱 ${escapeHTML(c.mobile || "-")}
+        &nbsp; | &nbsp;
+        🚗 ${escapeHTML(c.vehicleNumber || "-")}
+      </div>
+
+      <div style="margin-top:8px">
+        ${statusBadge(c.status)}
+      </div>
+
+      <button class="small-btn"
+        style="margin-top:10px"
+        onclick='editCustomer("${c.id}")'>
+        Open Record
+      </button>
+
+    </div>
+
+  `).join("");
+}
+
+
+function renderRecent(){
+
+  const box=document.getElementById("recentCustomers");
+
+  const list=customers.slice(0,5);
+
+  if(!list.length){
+
+    box.innerHTML=`
+      <div class="empty">
+        No customers yet. Add your first customer.
+      </div>
+    `;
+
+    return;
+  }
+
+  box.innerHTML=`
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Vehicle</th>
+            <th>Promise</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          ${list.map(c=>`
+
+            <tr>
+              <td>${escapeHTML(c.name)}</td>
+              <td>${escapeHTML(c.vehicleNumber || "-")}</td>
+              <td>${money(c.promisedAmount)}</td>
+              <td>${statusBadge(c.status)}</td>
+            </tr>
+
+          `).join("")}
+
+        </tbody>
+
+      </table>
+
+    </div>
+  `;
+}
+
+
+function renderDashboard(){
+
+  document.getElementById("totalCustomers").textContent=customers.length;
+
+  document.getElementById("pendingCustomers").textContent=
+    customers.filter(c=>c.status!=="Paid").length;
+
+  const promised=customers.reduce(
+    (sum,c)=>sum+Number(c.promisedAmount||0),0
+  );
+
+  document.getElementById("totalPromised").textContent=money(promised);
+
+  document.getElementById("todayFollowups").textContent=
+    customers.filter(c=>
+      c.promiseDate===today() &&
+      c.status!=="Paid"
+    ).length;
+
+  renderRecent();
+}
+
+
+function renderReports(){
+
+  const promised=customers.reduce(
+    (sum,c)=>sum+Number(c.promisedAmount||0),0
+  );
+
+  const collected=customers.reduce(
+    (sum,c)=>sum+Number(c.collectedAmount||0),0
+  );
+
+  const outstanding=Math.max(0,promised-collected);
+
+  document.getElementById("reportCustomers").textContent=customers.length;
+  document.getElementById("reportPromised").textContent=money(promised);
+  document.getElementById("reportCollected").textContent=money(collected);
+  document.getElementById("reportOutstanding").textContent=money(outstanding);
+
+  document.getElementById("reportSummary").innerHTML=`
+
+    <p style="margin-bottom:10px">
+      <strong>Total Customers:</strong> ${customers.length}
+    </p>
+
+    <p style="margin-bottom:10px">
+      <strong>Total Promised:</strong> ${money(promised)}
+    </p>
+
+    <p style="margin-bottom:10px">
+      <strong>Total Collected:</strong> ${money(collected)}
+    </p>
+
+    <p>
+      <strong>Outstanding:</strong> ${money(outstanding)}
+    </p>
+  `;
+}
+
+
+function renderAll(){
+
+  renderDashboard();
+  renderCustomers();
+  renderVehicles();
+  renderPayments();
+  renderFollowups();
+  renderReports();
+}
+
+
+function exportData(){
+
+  const blob=new Blob(
+    [JSON.stringify(customers,null,2)],
+    {type:"application/json"}
+  );
+
+  const url=URL.createObjectURL(blob);
+
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="finance-collection-backup.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+  showToast("Backup exported");
+}
+
+
+function clearAllData(){
+
+  if(!customers.length){
+    showToast("No data to clear");
+    return;
+  }
+
+  if(confirm("This will delete all customer records. Continue?")){
+
+    customers=[];
+
+    saveData();
+    renderAll();
+
+    showToast("All data cleared");
+  }
+}
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+renderAll();
+
+</script>
+
+</body>
+</html>
